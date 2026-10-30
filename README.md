@@ -1,14 +1,20 @@
 # Connectivity Credits prototype
 
-A working backend and operations console that turns synthetic school internet measurements into auditable demo credits. Built as an independent work sample for the Connectivity Credits backend consultancy.
+I built this prototype to support my application for UNICEF's Connectivity Credits backend consultancy. It gives reviewers a working example of my approach to event processing, policy decisions and failure recovery, with a live console and source code they can inspect.
+
+The backend turns synthetic school internet readings into auditable demo credits. This is an independent application work sample, not a UNICEF commission or an integration with its systems.
 
 **TypeScript · Express · React · PostgreSQL · Apache Kafka**
+
+## Start here
+
+**[Read the illustrated demo guide (PDF)](docs/prototype-overview.pdf)** — What it does, which buttons to try, what the numbers mean and how the backend works. No prior knowledge of Kafka or credit systems needed.
 
 **[Open the interactive demo](https://connectivity.ankitpasayat.com/)** · Shared synthetic sandbox: changes and resets affect all visitors. Do not enter personal data.
 
 ![Prototype overview](artifacts/browser-kafka/desktop-overview-brief.png)
 
-Start with the [five-page technical overview](docs/prototype-overview.pdf), then use the walkthrough below to inspect the behavior. [Operations and setup](OPERATIONS.md) contains the full local/Compose instructions. [Validation](VALIDATION.md) records local checks, remote CI evidence and remaining validation limits.
+[Operations and setup](OPERATIONS.md) contains the full local/Compose instructions. [Validation](VALIDATION.md) records local checks, remote CI evidence and remaining validation limits.
 
 ## What to review
 
@@ -32,6 +38,14 @@ Schools, providers, readings and credit amounts are synthetic. Kenya, Nepal and 
 A reading is saved with a durable event, published to Kafka, consumed, evaluated against a versioned policy and committed to PostgreSQL with its decision, credit and audit record. Database constraints protect repeated delivery. This is at-least-once event delivery with idempotent effects, not a distributed exactly-once claim.
 
 The default policy requires download at least 20 Mbps, upload at least 5 Mbps, latency at most 100 ms, uptime at least 98%, and simulated verified status. One qualifying school day receives 10 demo credits. Those values are illustrative assumptions.
+
+### Where the measurements come from
+
+This hosted demo does not run speed tests or monitor schools. Seeded readings, scenario batches and the manual form supply fictional values so reviewers can exercise the processing logic. The form is a test input, not a proposed workflow for school staff.
+
+Connecting real measurements would require an adapter for an approved source, such as school-side probes or Giga's existing measurement services, subject to the team's data contracts and access. [Giga Meter](https://github.com/unicef/giga-meter-docs) already performs automated tests from school devices. A browser speed test here would measure the visitor's connection; a test run on the hosting server would measure that server's connection. Neither would establish connectivity at the fictional schools shown in this demo.
+
+Latency probes and upload/download transfer tests measure different things. Availability also requires observations over an agreed period; a single successful test cannot establish a daily uptime percentage. Real verification and these measurement integrations remain outside the prototype.
 
 ## Run locally
 

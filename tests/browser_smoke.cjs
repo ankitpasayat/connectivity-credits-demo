@@ -130,7 +130,7 @@ async function noRootOverflow(page) {
   record('School country/search filters and empty result state work');
 
   await page.getByRole('button',{name:'Add measurement',exact:true}).click();
-  const form = page.getByRole('dialog',{name:'Submit a measurement',exact:true});
+  const form = page.getByRole('dialog',{name:'Submit a simulated reading',exact:true});
   await form.getByLabel('Service date',{exact:true}).fill('2020-05-10');
   await form.getByLabel('Source',{exact:true}).fill('browser-smoke');
   await form.getByLabel('External event ID',{exact:true}).fill('browser-form-001');
@@ -223,9 +223,9 @@ async function noRootOverflow(page) {
   assert(await mobile.locator('.table-scroll').evaluate(element=>{element.scrollLeft=element.scrollWidth;const moved=element.scrollLeft>0;element.scrollLeft=0;return moved;}),'Wide school table must scroll inside its own container');
   await screenshot(mobile,'mobile-schools.png');
   await mobile.getByRole('button',{name:'Add measurement',exact:true}).click();
-  await mobile.getByRole('dialog',{name:'Submit a measurement',exact:true}).waitFor();
+  await mobile.getByRole('dialog',{name:'Submit a simulated reading',exact:true}).waitFor();
   await noRootOverflow(mobile);
-  const dialogBounds = await mobile.getByRole('dialog',{name:'Submit a measurement',exact:true}).evaluate(element=>{const rect=element.getBoundingClientRect();return {x:rect.x,y:rect.y,right:rect.right,bottom:rect.bottom,width:rect.width,height:rect.height};});
+  const dialogBounds = await mobile.getByRole('dialog',{name:'Submit a simulated reading',exact:true}).evaluate(element=>{const rect=element.getBoundingClientRect();return {x:rect.x,y:rect.y,right:rect.right,bottom:rect.bottom,width:rect.width,height:rect.height};});
   report.mobile_dialog_bounds = dialogBounds;
   assert(dialogBounds.x >= -1 && dialogBounds.right <= 391 && dialogBounds.y >= -1 && dialogBounds.bottom <= 845,`Mobile dialog is clipped: ${JSON.stringify(dialogBounds)}`);
   await screenshot(mobile,'mobile-form.png');

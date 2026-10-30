@@ -527,7 +527,7 @@ function Overview({
             </>
           }
           icon="school"
-          note="Latest evaluated service status"
+          note="Latest reading's policy status"
         />
         <Metric
           label="Credits issued"
@@ -1003,14 +1003,14 @@ function MeasurementForm({
   }
   return (
     <Modal
-      title="Submit a measurement"
+      title="Submit a simulated reading"
       eyebrow="SYNTHETIC DATA INGESTION"
       onClose={onClose}
     >
       <form onSubmit={submit}>
         <p className="form-intro">
-          Add a fictional daily reading to the event queue. The worker evaluates
-          it against the policy when processed.
+          Choose fictional values to test a policy decision. This form does not
+          run a speed test or collect measurements from a school.
         </p>
         {error && (
           <div className="form-error" role="alert">
@@ -1680,7 +1680,9 @@ function App() {
             <div className="shared-demo-notice" role="note">
               <Icon name="info" size={19} />
               <div>
-                <strong>Shared public demo</strong>
+                <strong>Application work sample</strong>
+                <p>Built by Ankit Pasayat for his application to UNICEF's Connectivity Credits backend consultancy. An independent prototype with simulated school readings and credits.</p>
+                <p><a href="https://github.com/ankitpasayat/connectivity-credits-demo/blob/main/docs/prototype-overview.pdf" target="_blank" rel="noreferrer">Start here: illustrated demo guide (PDF)</a></p>
                 <p>All data is synthetic. Changes and resets affect every visitor. Do not enter personal data.</p>
               </div>
             </div>
