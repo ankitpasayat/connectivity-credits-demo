@@ -55,7 +55,7 @@ For **broker-free mode**, run `CONNECTIVITY_TRANSPORT=local ./scripts/start.sh`.
 | TypeScript UI | React/TypeScript console in `frontend/`; strict type checking and Vite build. |
 | REST/JSON | Measurement ingestion, rules, worker, retry and ledger endpoints under `/api`; JSON validation/error responses. |
 | Kafka event processing | Real native Node Kafka Producer/Consumer, broker delivery acknowledgements, durable outbox/inbox and explicit consumer-offset commits; independent actual-broker record/offset tests. |
-| Containerization | Multistage `Dockerfile` and Compose for Express + PostgreSQL + Kafka, plus an optional worker. Image build and Compose configuration validation passed in GitHub Actions; the full application stack has not been exercised end to end in containers. |
+| Containerization | Multistage `Dockerfile` and Compose for Express + PostgreSQL + Kafka, plus an optional worker. GitHub Actions passed image/configuration validation and the public-demo stack's end-to-end issuance, duplicate and rollback/retry checks. |
 | Tests and CI | Native Node tests, independent HTTP/browser checks against spawned Express processes, real Kafka tests and `.github/workflows/ci.yml`. See [remote CI evidence](VALIDATION.md#container-and-ci-validation) for executed checks and current status. |
 | Rules and audit | Versioned policy snapshots, atomic decision/credit/audit completion, failure injection and safe retry. |
 | Persistence | Actual PostgreSQL transactions, uniqueness constraints and session advisory worker locks; SQLite remains only a read-only migration source/historical reference. |
@@ -74,7 +74,17 @@ docker compose --env-file .data/postgres/compose.env up --build
 
 Open [localhost:3000](http://127.0.0.1:3000). Express binds to `0.0.0.0` inside the container, waits for PostgreSQL/Kafka health and uses internal service addresses. Only localhost host ports are published. Named volumes retain PostgreSQL and broker data. Add `--profile background-worker` to also start the continuous consumer; that may process events before guided UI actions. Use the same `--env-file` with `down` to stop containers; `down --volumes` also deletes this Compose project's data.
 
-The files follow Apache's [official Kafka Docker configuration examples](https://github.com/apache/kafka/blob/trunk/docker/examples/docker-compose-files/single-node/plaintext/docker-compose.yml). Docker is unavailable on the development machine. GitHub Actions has validated the Compose configuration and built the application image; this does not establish a successful end-to-end run of the full container stack. See the [CI record](VALIDATION.md#container-and-ci-validation).
+The files follow Apache's [official Kafka Docker configuration examples](https://github.com/apache/kafka/blob/trunk/docker/examples/docker-compose-files/single-node/plaintext/docker-compose.yml). Docker is unavailable on the development machine. GitHub Actions builds and runs the public-demo Compose stack, including the business-flow smoke checks in `scripts/hosted-smoke.mjs`. See the [CI record](VALIDATION.md#container-and-ci-validation).
+
+### Hosted sandbox with Coolify
+
+The [public demo](https://connectivity.ankitpasayat.com/) uses `compose.coolify.yml` from the `main` branch. Configure the API service's HTTPS domain to forward to internal port 3000. The Compose file publishes no host ports for PostgreSQL or Kafka. Coolify generates `SERVICE_PASSWORD_64_ADMIN` and `SERVICE_PASSWORD_64_APP`; do not commit or print their values. `Dockerfile.postgres` packages the initialization script inside the database image, avoiding Coolify's relocation of relative bind mounts. PostgreSQL initializes a separate, non-superuser application role. Persistent volumes retain the database and broker state across redeploys.
+
+`CONNECTIVITY_PUBLIC_DEMO=true` enables a shared-sandbox banner and bounded writes: one active mutation, a global burst of eight writes refilling at 20 per minute, separate reset limits, a 5,000-row budget with recovery headroom, and a 50-event worker batch limit. Health probes are coalesced and cached for five seconds. These process-local controls assume one API instance; they are not authentication or a distributed abuse-control system. Every visitor shares the same synthetic data, policy and reset button.
+
+Container memory limits are 256 MiB for PostgreSQL, 768 MiB for Kafka and 384 MiB for the API. Kafka uses one partition/replica and bounded log retention; Docker logs rotate. This is a small review sandbox, not a high-availability service. Keep the continuous worker disabled for the guided manual processing steps.
+
+For a fresh, disposable deployment, run `node --input-type=module < scripts/hosted-smoke.mjs` inside its API container. The check submits clean, duplicate and failing scenarios, retries the failed event, then resets the synthetic dataset. Do not run it against a database whose changes need to be retained.
 
 ## Five-minute walkthrough
 
@@ -110,7 +120,7 @@ The default policy requires download ≥20 Mbps, upload ≥5 Mbps, latency ≤10
 
 Kafka mode uses an at-least-once outbox relay. The consumer records receipt, commits the decision/check snapshot, credit and audit atomically in PostgreSQL, then commits the Kafka offset. A failure after insertion rolls back business state; durable failure bookkeeping precedes acknowledgement. Retry publishes a fresh broker delivery. PostgreSQL uniqueness makes replayed effects idempotent. No distributed exactly-once guarantee is claimed.
 
-The demo uses one topic partition and manually assigned consumers serialized by PostgreSQL session advisory locks, automatically released when a worker connection dies. It remains a local prototype. Historical seed decisions are precomputed; queued/new Kafka readings use the broker. Reset changes the namespace so old broker records cannot resurrect data.
+The demo uses one topic partition and manually assigned consumers serialized by PostgreSQL session advisory locks, automatically released when a worker connection dies. It remains a prototype, including the hosted sandbox. Historical seed decisions are precomputed; queued/new Kafka readings use the broker. Reset changes the namespace so old broker records cannot resurrect data.
 
 Code is organized into `server/` (Express, PostgreSQL, rules and worker), `frontend/` (console), `tests/` (independent HTTP/PG/Kafka checks), `scripts/` (launch/verification). `DATABASE_URL` selects a dedicated database; `CONNECTIVITY_DB_SCHEMA` selects a schema. Tests use disposable `qa_*` PostgreSQL schemas and never reset the review schema.
 
@@ -166,4 +176,4 @@ Observed results and the distinction between executed tests and provided configu
 
 Use the console to explain the ingestion-to-Kafka-to-decision-to-credit flow, demonstrate failure/retry live, and inspect the same record in the measurement drawer, event log and ledger. The tests provide reproducible evidence for the invariants. A defensible interview statement is: “I built a Node.js/TypeScript/Express and React prototype with real Kafka producers and consumers, policy evaluation, replay protection and atomic demo credit issuance using synthetic data.” Quantify tested behaviors and engineering choices, not connectivity impact or savings that this prototype has not measured.
 
-A production implementation would need authenticated roles, independently verified measurements and school/provider identities, a reviewed incentive policy, privacy and retention controls, operational monitoring, backups and recovery, security review, and a scalable ingestion/worker deployment. Any real value transfer would require its own governance and payment integration. Those integrations are outside this local demonstration.
+A production implementation would need authenticated roles, independently verified measurements and school/provider identities, a reviewed incentive policy, privacy and retention controls, operational monitoring, backups and recovery, security review, and a scalable ingestion/worker deployment. Any real value transfer would require its own governance and payment integration. Those integrations are outside this demonstration.

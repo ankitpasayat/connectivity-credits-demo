@@ -4,6 +4,8 @@ A working backend and operations console that turns synthetic school internet me
 
 **TypeScript · Express · React · PostgreSQL · Apache Kafka**
 
+**[Open the interactive demo](https://connectivity.ankitpasayat.com/)** · Shared synthetic sandbox: changes and resets affect all visitors. Do not enter personal data.
+
 ![Prototype overview](artifacts/browser-kafka/desktop-overview-brief.png)
 
 Start with the [five-page technical overview](docs/prototype-overview.pdf), then use the walkthrough below to inspect the behavior. [Operations and setup](OPERATIONS.md) contains the full local/Compose instructions. [Validation](VALIDATION.md) records local checks, remote CI evidence and remaining validation limits.
@@ -41,7 +43,7 @@ Use Node.js 22.16+ (24 recommended), npm, Python 3.11+, PostgreSQL 16+ server bi
 
 Open **http://127.0.0.1:5173**. The launcher starts a separate PostgreSQL cluster on 5433, Kafka on 19092, Express on 3000 and Vite on 5173. Credentials are generated locally into ignored `.data` files; no database or credentials ship with this repository. The first run downloads and verifies the Kafka/Java runtime. Other PostgreSQL instances are left alone.
 
-A Compose alternative is provided in [OPERATIONS.md](OPERATIONS.md#containers). GitHub Actions has built the application image and validated the Compose configuration. The full Compose application has not been exercised end to end; the native PostgreSQL/Kafka path was exercised locally. See [CI evidence and status](VALIDATION.md#container-and-ci-validation) for the separate broker checks.
+A Compose alternative is provided in [OPERATIONS.md](OPERATIONS.md#containers). GitHub Actions has built the application image and exercised the public-demo Compose stack end to end, including clean issuance, duplicate delivery and rollback/retry. See [CI evidence and status](VALIDATION.md#container-and-ci-validation).
 
 ## Validation
 
