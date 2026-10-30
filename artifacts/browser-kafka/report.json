@@ -1,0 +1,91 @@
+{
+  "started_at": "2026-10-30T16:52:04.428Z",
+  "base_url": "http://127.0.0.1:8766",
+  "transport": "kafka",
+  "database_isolation": "temporary PostgreSQL schema",
+  "database_isolated": true,
+  "checks": [
+    "Seeded desktop overview loads, kafka transport label matches live health, and chart range changes",
+    "School country/search filters and empty result state work",
+    "Actual measurement form creates queued work, worker issues credit, detail exposes five passing checks",
+    "Worker failure leaves zero new credit; UI Retry completes exactly one issuance",
+    "Policy edit saves a new version, preserves an old decision, and clean scenario uses the new policy",
+    "Ledger country filter and downloaded CSV agree on filtered records",
+    "Reset can be cancelled and confirmed; confirmation restores original policy and seed",
+    "390px mobile overview, navigation, schools and measurement dialog fit the viewport",
+    "No browser page errors or console errors on exercised flows"
+  ],
+  "errors": [],
+  "failed_responses": [],
+  "viewport_checks": [
+    {
+      "configuredWidth": 1440,
+      "heading": "Network overview",
+      "layoutWidth": 1440,
+      "visualWidth": 1440,
+      "content": 1440
+    },
+    {
+      "configuredWidth": 390,
+      "heading": "Network overview",
+      "layoutWidth": 390,
+      "visualWidth": 390,
+      "content": 390
+    },
+    {
+      "configuredWidth": 390,
+      "heading": "Schools",
+      "layoutWidth": 390,
+      "visualWidth": 390,
+      "content": 390
+    },
+    {
+      "configuredWidth": 390,
+      "heading": "Schools",
+      "layoutWidth": 390,
+      "visualWidth": 390,
+      "content": 390
+    }
+  ],
+  "screenshots": [
+    "desktop-overview.png",
+    "desktop-measurement-checks.png",
+    "desktop-worker-failure.png",
+    "mobile-overview.png",
+    "mobile-schools.png",
+    "mobile-form.png"
+  ],
+  "runtimes": {
+    "node": "v24.19.0",
+    "backend": "Node.js / TypeScript / Express",
+    "playwright": "1.62.1",
+    "browser": "156.0.8078.79"
+  },
+  "postgresql": {
+    "version": "16.2",
+    "database": "connectivity_credits",
+    "role": "connectivity_app",
+    "superuser": false,
+    "schema": "qa_browser_1793379124428_f513d6b5"
+  },
+  "health": {
+    "status": "ok",
+    "mode": "demo",
+    "database": "ok",
+    "database_engine": "postgresql",
+    "runtime": "node",
+    "framework": "express",
+    "transport": "kafka",
+    "broker": "ok",
+    "broker_detail": null
+  },
+  "mobile_dialog_bounds": {
+    "x": 14,
+    "y": 65.3125,
+    "right": 376,
+    "bottom": 778.6875,
+    "width": 362,
+    "height": 713.375
+  },
+  "finished_at": "2026-10-30T16:52:18.737Z"
+}

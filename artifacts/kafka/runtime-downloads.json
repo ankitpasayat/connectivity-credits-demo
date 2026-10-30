@@ -1,0 +1,20 @@
+{
+  "verified_at": "2026-10-30T15:21:42Z",
+  "kafka": {
+    "version": "4.4.0",
+    "url": "https://downloads.apache.org/kafka/4.4.0/kafka_2.13-4.4.0.tgz",
+    "checksum_url": "https://downloads.apache.org/kafka/4.4.0/kafka_2.13-4.4.0.tgz.sha512",
+    "sha512": "f5ceba8a265ab6bb2d68362b1f6859a95e15d60ef92ba83b43fdf065b557dc18e98d6383c15b9977320e25b3a2c8b6f11decb17b0fa6c0f163423793a0eb95cb",
+    "bytes": 135295923
+  },
+  "java": {
+    "version": "21.0.13+9",
+    "os": "mac",
+    "architecture": "aarch64",
+    "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jre_aarch64_mac_hotspot_21.0.13_9.tar.gz",
+    "metadata_url": "https://api.adoptium.net/v3/assets/release_name/eclipse/jdk-21.0.13%2B9?architecture=aarch64&image_type=jre&jvm_impl=hotspot&os=mac",
+    "checksum_url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jre_aarch64_mac_hotspot_21.0.13_9.tar.gz.sha256.txt",
+    "sha256": "225bab0a09491ef06835488cd942f5d2befa9a0410a2484f0c8bbcf7506ec09a",
+    "bytes": 47935740
+  }
+}

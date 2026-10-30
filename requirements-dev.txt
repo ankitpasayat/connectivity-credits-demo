@@ -1,0 +1,6 @@
+# Python is independent HTTP/Kafka QA tooling, not the active application backend.
+pytest==8.3.5
+httpx==0.28.1
+confluent-kafka==2.16.0
+psycopg[binary]==3.2.9
+

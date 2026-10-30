@@ -1,0 +1,102 @@
+name: Prototype checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DATABASE_URL: postgresql://connectivity_ci:ci_ephemeral_only@127.0.0.1:5433/connectivity_credits
+  CONNECTIVITY_POSTGRES_PASSWORD: ci_ephemeral_only
+  CONNECTIVITY_POSTGRES_ADMIN_PASSWORD: ci_admin_ephemeral_only
+
+jobs:
+  build-and-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16-bookworm
+        env:
+          POSTGRES_USER: connectivity_ci
+          POSTGRES_PASSWORD: ci_ephemeral_only
+          POSTGRES_DB: connectivity_credits
+        ports: ["5433:5432"]
+        options: --health-cmd="pg_isready -U connectivity_ci -d connectivity_credits" --health-interval=5s --health-timeout=5s --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-dev.lock
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: |
+            frontend/package-lock.json
+            server/package-lock.json
+      - name: Install independent QA tools
+        run: python -m pip install -r requirements-dev.lock
+      - name: Build and test active Express backend
+        working-directory: server
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+          npm test
+      - name: Build frontend
+        working-directory: frontend
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+      - name: Local transport and transaction tests
+        run: python -m pytest tests -m "not kafka" -q
+      - name: Validate Compose configuration and build image
+        run: |
+          docker compose config --quiet
+          docker compose build api
+
+  real-kafka:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16-bookworm
+        env:
+          POSTGRES_USER: connectivity_ci
+          POSTGRES_PASSWORD: ci_ephemeral_only
+          POSTGRES_DB: connectivity_credits
+        ports: ["5433:5432"]
+        options: --health-cmd="pg_isready -U connectivity_ci -d connectivity_credits" --health-interval=5s --health-timeout=5s --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install independent QA tools
+        run: python -m pip install -r requirements-dev.lock
+      - name: Build active Node backend
+        working-directory: server
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+      - name: Start real Kafka
+        run: docker compose up --wait kafka
+      - name: Real broker integration tests
+        env:
+          RUN_KAFKA_TESTS: "1"
+          CONNECTIVITY_KAFKA_BOOTSTRAP_SERVERS: 127.0.0.1:19092
+        run: python -m pytest tests/test_kafka_integration.py -q
+      - name: Broker logs on failure
+        if: failure()
+        run: docker compose logs kafka
+      - name: Stop containers
+        if: always()
+        run: docker compose down --volumes

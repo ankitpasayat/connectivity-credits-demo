@@ -1,0 +1,25 @@
+# Runtime state and credentials
+.data/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+# Dependencies and generated files
+**/node_modules/
+**/dist/
+**/.venv/
+.venv/
+.vite/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.tsbuildinfo
+*.log
+.DS_Store
+tmp/
+output/
+test-results/
+playwright-report/
