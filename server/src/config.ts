@@ -11,8 +11,11 @@ export interface Config {
   group: string;
   timeoutMs: number;
   port: number;
+  publicDemo: boolean;
 }
 export function readConfig(env: NodeJS.ProcessEnv = process.env): Config {
+  const publicDemo = env.CONNECTIVITY_PUBLIC_DEMO ?? 'false';
+  if (publicDemo !== 'true' && publicDemo !== 'false') throw new Error('CONNECTIVITY_PUBLIC_DEMO must be true or false');
   const transport = env.CONNECTIVITY_TRANSPORT ?? 'local';
   if (transport !== 'local' && transport !== 'kafka') throw new Error('CONNECTIVITY_TRANSPORT must be local or kafka');
   const timeout = Number(env.CONNECTIVITY_KAFKA_TIMEOUT_SECONDS ?? 12);
@@ -24,5 +27,5 @@ export function readConfig(env: NodeJS.ProcessEnv = process.env): Config {
   return { databaseUrl: env.DATABASE_URL ?? env.CONNECTIVITY_DATABASE_URL ?? 'postgresql://127.0.0.1:5433/connectivity_credits', databaseSchema,
     transport, bootstrap: env.CONNECTIVITY_KAFKA_BOOTSTRAP_SERVERS ?? '127.0.0.1:19092',
     topic: env.CONNECTIVITY_KAFKA_TOPIC ?? 'connectivity-measurements-v1',
-    group: env.CONNECTIVITY_KAFKA_GROUP_ID ?? 'connectivity-credits-demo', timeoutMs: timeout * 1000, port };
+    group: env.CONNECTIVITY_KAFKA_GROUP_ID ?? 'connectivity-credits-demo', timeoutMs: timeout * 1000, port, publicDemo: publicDemo === 'true' };
 }

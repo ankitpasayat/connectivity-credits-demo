@@ -59,6 +59,20 @@ jobs:
         run: |
           docker compose config --quiet
           docker compose build api
+      - name: Run the public-demo container stack
+        env:
+          SERVICE_PASSWORD_64_ADMIN: ci_public_admin_ephemeral_only
+          SERVICE_PASSWORD_64_APP: ci_public_app_ephemeral_only
+        run: |
+          docker compose -p public-demo-ci -f compose.coolify.yml config --quiet
+          docker compose -p public-demo-ci -f compose.coolify.yml up --build --wait --wait-timeout 240
+          docker compose -p public-demo-ci -f compose.coolify.yml exec -T api node --input-type=module < scripts/hosted-smoke.mjs
+      - name: Public-demo container logs on failure
+        if: failure()
+        run: docker compose -p public-demo-ci -f compose.coolify.yml logs --tail=60
+      - name: Stop public-demo containers
+        if: always()
+        run: docker compose -p public-demo-ci -f compose.coolify.yml down --volumes
 
   real-kafka:
     runs-on: ubuntu-latest

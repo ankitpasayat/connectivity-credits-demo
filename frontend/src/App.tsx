@@ -1366,7 +1366,7 @@ function App() {
     setRefreshing(true);
     try {
       await refresh();
-      setToast({ text: "Workspace refreshed from the local database." });
+      setToast({ text: "Workspace refreshed from the demo database." });
     } catch (err) {
       setToast({ text: (err as Error).message, error: true });
     } finally {
@@ -1501,6 +1501,7 @@ function App() {
     ) || [];
   const measurement = data?.measurements.find((m) => m.id === selected);
   const transport = getTransportInfo(data?.health, !!loadError);
+  const publicDemo = data?.health.public_demo === true;
   function exportCSV() {
     if (!data) return;
     const columns = [
@@ -1623,7 +1624,7 @@ function App() {
             </span>
             <strong>
               Big possibilities.
-              <br />A small, local demo.
+              <br />A small{publicDemo ? ", shared" : ", local"} demo.
             </strong>
             <p>Explore how evidence can power accountable connectivity.</p>
             <span>NO REAL-WORLD TRANSFERS</span>
@@ -1637,7 +1638,7 @@ function App() {
             Reset demo data
           </button>
           <div className="sidebar-version">
-            <span className="live-dot" /> Prototype v1.0 <span>LOCAL</span>
+            <span className="live-dot" /> Prototype v1.0 <span>{publicDemo ? "SHARED" : "LOCAL"}</span>
           </div>
         </div>
       </aside>
@@ -1675,6 +1676,15 @@ function App() {
           </div>
         </header>
         <main>
+          {publicDemo && (
+            <div className="shared-demo-notice" role="note">
+              <Icon name="info" size={19} />
+              <div>
+                <strong>Shared public demo</strong>
+                <p>All data is synthetic. Changes and resets affect every visitor. Do not enter personal data.</p>
+              </div>
+            </div>
+          )}
           <div className="page-heading">
             <div>
               <div className="eyebrow">CONNECTIVITY, ACCOUNTED FOR</div>
@@ -1731,12 +1741,12 @@ function App() {
             <div className="error-banner" role="alert">
               <Icon name="alert" size={20} />
               <div>
-                <strong>Cannot reach the local data service</strong>
+                <strong>Cannot reach the demo data service</strong>
                 <p>
                   {loadError}{" "}
                   {data
                     ? "The last successful view is shown; refresh to get current data."
-                    : "Start the backend on port 3000, then try again."}
+                    : "Please try again shortly."}
                 </p>
               </div>
               <button
@@ -1752,7 +1762,7 @@ function App() {
             <div className="loading-state" role="status">
               <span className="loading-spinner" />
               <h2>Connecting the dots…</h2>
-              <p>Loading your local operations workspace.</p>
+              <p>Loading the operations workspace.</p>
             </div>
           ) : (
             data && (
@@ -2376,10 +2386,10 @@ function App() {
             </span>
             <p>
               This clears measurements, demo credits, events and policy edits in
-              the local demo database, then restores the original fictional
+              the {publicDemo ? "shared" : "local"} demo database, then restores the original fictional
               seed.
             </p>
-            <p>Your current demo changes will be lost.</p>
+            <p>{publicDemo ? "Every visitor's current demo changes will be lost." : "Your current demo changes will be lost."}</p>
           </div>
           <div className="modal-footer">
             <button

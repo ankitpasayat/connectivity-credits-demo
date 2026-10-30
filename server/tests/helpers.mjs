@@ -7,7 +7,7 @@ import { readConfig } from '../dist/config.js';
 
 export async function fixture(test, overrides = {}) {
   const folder = mkdtempSync(join(tmpdir(), 'connectivity-node-test-'));
-  const config = { ...readConfig(), transport: 'local', databaseSchema: 'node_test_' + randomUUID().replaceAll('-', ''),
+  const config = { ...readConfig(), transport: 'local', publicDemo: false, databaseSchema: 'node_test_' + randomUUID().replaceAll('-', ''),
     topic: 'connectivity-node-test-' + randomUUID().replaceAll('-', ''), timeoutMs: 10_000, ...overrides };
   const { app, runtime } = await createApp(config);
   const server = await new Promise(resolve => { const value = app.listen(0, '127.0.0.1', () => resolve(value)); });

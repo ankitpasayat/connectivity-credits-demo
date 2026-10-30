@@ -3875,3 +3875,23 @@ td small {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.shared-demo-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-bottom: 24px;
+  padding: 14px 16px;
+  border: 1px solid #cad9c1;
+  border-radius: 7px;
+  background: #f0f5e9;
+  color: #425e39;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.shared-demo-notice svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.shared-demo-notice p {
+  margin-top: 3px;
+}

@@ -1,6 +1,7 @@
 export type Health = {
   status: "ok";
   mode: "demo";
+  public_demo: boolean;
   database: "ok";
   database_engine: "postgresql";
   transport: "local" | "kafka";
