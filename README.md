@@ -8,7 +8,7 @@ The backend turns synthetic school internet readings into auditable demo credits
 
 ## Start here
 
-**[Read the illustrated demo guide (PDF)](docs/prototype-overview.pdf)** — What it does, which buttons to try, what the numbers mean and how the backend works. No prior knowledge of Kafka or credit systems needed.
+**[Read the illustrated demo guide (PDF)](docs/prototype-overview.pdf)** — A guided tour, architecture diagram, explanation of the numbers and the engineering skills demonstrated. No prior knowledge of Kafka or credit systems needed.
 
 **[Open the interactive demo](https://connectivity.ankitpasayat.com/)** · Shared synthetic sandbox: changes and resets affect all visitors. Do not enter personal data.
 
