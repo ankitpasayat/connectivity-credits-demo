@@ -16,6 +16,16 @@ The backend turns synthetic school internet readings into auditable demo credits
 
 [Operations and setup](OPERATIONS.md) contains the full local/Compose instructions. [Validation](VALIDATION.md) records local checks, remote CI evidence and remaining validation limits.
 
+## How the demo works
+
+Follow the main path from top to bottom: save a reading, publish its event, evaluate the policy and commit the result. The side arrows show the worker reading the policy and saving its decision.
+
+![Architecture: React console submits a reading to Express, which saves it and an outbox event in PostgreSQL. The publisher sends the event through Kafka to the worker. The worker reads the saved reading and active policy, then commits the decision, credit and audit together. The API returns stored results to the console.](docs/architecture.svg)
+
+The API, outbox publisher and on-demand worker are logical components in the **same Node.js container**. PostgreSQL and Kafka each run in a separate container, hosted through Coolify on Hetzner. The API reads stored results from PostgreSQL and returns them to the browser. Scenario, process and retry buttons trigger the work; the demo does not continuously monitor school networks.
+
+This same vector diagram appears on page 3 of the [demo guide](docs/prototype-overview.pdf). Its editable source is [build_architecture.py](docs/build_architecture.py).
+
 ## What to review
 
 1. **Clean batch:** submit readings, inspect five policy checks and find the resulting credit in the ledger.

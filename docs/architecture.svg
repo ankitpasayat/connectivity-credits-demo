@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="880" height="850" preserveAspectRatio="xMinYMin meet" viewBox="0 0 880 850" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>Connectivity Credits demo architecture</title>
+	<desc>React sends a reading to Express, which saves it and an outbox event in PostgreSQL. The publisher sends the event through Kafka. The worker reads the saved reading and active policy, then commits its decision, credit and audit together. The API returns stored results to React.</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="880" height="850"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-850)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0" y="0" width="880" height="850" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<rect x="280" y="748" width="320" height="80" rx="14" ry="14" style="stroke: rgb(14%,38%,92%); stroke-linecap: butt; stroke-width: 2; fill: rgb(93%,96%,100%); fill-rule: evenodd;"/>
+			<text x="362.03" y="796" style="font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 23px;fill: rgb(8%,15%,24%); stroke:none;" transform="translate(0,1592) scale(1,-1)">React console</text>
+			<text x="364.418" y="771" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(31%,38%,47%); stroke:none;" transform="translate(0,1542) scale(1,-1)">TypeScript interface</text>
+			<rect x="280" y="612" width="320" height="80" rx="14" ry="14" style="stroke: rgb(3%,56%,69%); stroke-linecap: butt; stroke-width: 2; fill: rgb(92%,99%,100%); fill-rule: evenodd;"/>
+			<text x="372.88599999999997" y="660" style="font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 23px;fill: rgb(8%,15%,24%); stroke:none;" transform="translate(0,1320) scale(1,-1)">Express API</text>
+			<text x="325.1905" y="635" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(31%,38%,47%); stroke:none;" transform="translate(0,1270) scale(1,-1)">Validate the submitted reading</text>
+			<path d="M 280 561 C 280 587 600 587 600 561 L 600 493 C 600 467 280 467 280 493 Z " style="stroke: rgb(48%,22%,92%); stroke-linecap: butt; stroke-width: 2; fill: rgb(96%,95%,100%); fill-rule: evenodd;"/>
+			<path d="M 280 561 C 280 535 600 535 600 561 " style="stroke: rgb(48%,22%,92%); stroke-linecap: butt; stroke-width: 1.5; fill: none; fill-rule: evenodd;"/>
+			<text x="373.5415" y="512" style="font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 23px;fill: rgb(8%,15%,24%); stroke:none;" transform="translate(0,1024) scale(1,-1)">PostgreSQL</text>
+			<text x="327.09450000000004" y="490" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(31%,38%,47%); stroke:none;" transform="translate(0,980) scale(1,-1)">Readings, policies and results</text>
+			<rect x="280" y="340" width="320" height="80" rx="14" ry="14" style="stroke: rgb(30%,27%,89%); stroke-linecap: butt; stroke-width: 2; fill: rgb(93%,94%,100%); fill-rule: evenodd;"/>
+			<text x="344.7915" y="388" style="font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 23px;fill: rgb(8%,15%,24%); stroke:none;" transform="translate(0,776) scale(1,-1)">Outbox publisher</text>
+			<text x="334.158" y="363" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(31%,38%,47%); stroke:none;" transform="translate(0,726) scale(1,-1)">Send saved events to Kafka</text>
+			<rect x="280" y="204" width="320" height="80" rx="14" ry="14" style="stroke: rgb(85%,46%,2%); stroke-linecap: butt; stroke-width: 2; fill: rgb(100%,98%,92%); fill-rule: evenodd;"/>
+			<text x="363.9505" y="252" style="font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 23px;fill: rgb(8%,15%,24%); stroke:none;" transform="translate(0,504) scale(1,-1)">Apache Kafka</text>
+			<text x="324.7315" y="227" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(31%,38%,47%); stroke:none;" transform="translate(0,454) scale(1,-1)">Deliver the event to the worker</text>
+			<rect x="280" y="68" width="320" height="80" rx="14" ry="14" style="stroke: rgb(1%,47%,34%); stroke-linecap: butt; stroke-width: 2; fill: rgb(92%,99%,96%); fill-rule: evenodd;"/>
+			<text x="400.3825" y="116" style="font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 23px;fill: rgb(8%,15%,24%); stroke:none;" transform="translate(0,232) scale(1,-1)">Worker</text>
+			<text x="313.86" y="91" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(31%,38%,47%); stroke:none;" transform="translate(0,182) scale(1,-1)">Apply policy and protect issuance</text>
+			<path d="M 440 748 L 440 692 " style="stroke: rgb(14%,38%,92%); stroke-linecap: butt; stroke-width: 2.4; fill: none; fill-rule: evenodd;"/>
+			<polygon points="440 692, 445.5 701.5263, 434.5 701.5263" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,38%,92%); fill-rule: evenodd;"/>
+			<text x="508.8375" y="722" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(14%,38%,92%); stroke:none;" transform="translate(0,1444) scale(1,-1)">Submit reading</text>
+			<path d="M 440 612 L 440 581 " style="stroke: rgb(3%,56%,69%); stroke-linecap: butt; stroke-width: 2.4; fill: none; fill-rule: evenodd;"/>
+			<polygon points="440 581, 445.5 590.5263, 434.5 590.5263" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(3%,56%,69%); fill-rule: evenodd;"/>
+			<text x="514.376" y="594" style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;fill: rgb(5%,45%,56%); stroke:none;" transform="translate(0,1188) scale(1,-1)">Save input + event + outbox</text>
+			<path d="M 440 477 L 440 420 " style="stroke: rgb(48%,22%,92%); stroke-linecap: butt; stroke-width: 2.4; fill: none; fill-rule: evenodd;"/>
+			<polygon points="440 420, 445.5 429.5263, 434.5 429.5263" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(48%,22%,92%); fill-rule: evenodd;"/>
+			<text x="501.168" y="446" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(48%,22%,92%); stroke:none;" transform="translate(0,892) scale(1,-1)">Pending delivery</text>
+			<path d="M 440 340 L 440 284 " style="stroke: rgb(30%,27%,89%); stroke-linecap: butt; stroke-width: 2.4; fill: none; fill-rule: evenodd;"/>
+			<polygon points="440 284, 445.5 293.5263, 434.5 293.5263" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(30%,27%,89%); fill-rule: evenodd;"/>
+			<text x="486.9745" y="310" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(30%,27%,89%); stroke:none;" transform="translate(0,620) scale(1,-1)">Publish event</text>
+			<path d="M 440 204 L 440 148 " style="stroke: rgb(85%,46%,2%); stroke-linecap: butt; stroke-width: 2.4; fill: none; fill-rule: evenodd;"/>
+			<polygon points="440 148, 445.5 157.5263, 434.5 157.5263" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(85%,46%,2%); fill-rule: evenodd;"/>
+			<text x="482.4745" y="174" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(70%,32%,3%); stroke:none;" transform="translate(0,348) scale(1,-1)">Consume event</text>
+			<path d="M 280 510 L 112 510 L 112 108 L 280 108 " style="stroke: rgb(48%,22%,92%); stroke-linecap: butt; stroke-width: 2.4; fill: none; fill-rule: evenodd; stroke-dasharray: 7, 6;"/>
+			<polygon points="280 108, 270.4737 113.5, 270.4737 102.5" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(48%,22%,92%); fill-rule: evenodd;"/>
+			<rect x="24" y="285" width="182" height="78" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="35.933499999999995" y="344" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(48%,22%,92%); stroke:none;" transform="translate(0,688) scale(1,-1)">Read saved reading</text>
+			<text x="49.168" y="321" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(48%,22%,92%); stroke:none;" transform="translate(0,642) scale(1,-1)">and active policy</text>
+			<path d="M 600 108 L 768 108 L 768 510 L 600 510 " style="stroke: rgb(1%,47%,34%); stroke-linecap: butt; stroke-width: 2.4; fill: none; fill-rule: evenodd;"/>
+			<polygon points="600 510, 609.5263 504.5, 609.5263 515.5" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(1%,47%,34%); fill-rule: evenodd;"/>
+			<rect x="675" y="272" width="187" height="105" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="702.822" y="355" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(1%,47%,34%); stroke:none;" transform="translate(0,710) scale(1,-1)">Commit decision,</text>
+			<text x="709.8855" y="332" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(1%,47%,34%); stroke:none;" transform="translate(0,664) scale(1,-1)">credit and audit</text>
+			<text x="736.8135" y="309" style="font-family: Arial, Helvetica, sans-serif; font-size: 17px;fill: rgb(1%,47%,34%); stroke:none;" transform="translate(0,618) scale(1,-1)">together</text>
+			<path d="M 280 652 L 198 652 L 198 788 L 280 788 " style="stroke: rgb(14%,38%,92%); stroke-linecap: butt; stroke-width: 2.4; fill: none; fill-rule: evenodd; stroke-dasharray: 7, 6;"/>
+			<polygon points="280 788, 270.4737 793.5, 270.4737 782.5" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(14%,38%,92%); fill-rule: evenodd;"/>
+			<rect x="82" y="695" width="145" height="49" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="101.32" y="724" style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;fill: rgb(14%,38%,92%); stroke:none;" transform="translate(0,1448) scale(1,-1)">Display stored</text>
+			<text x="128.44" y="701" style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;fill: rgb(14%,38%,92%); stroke:none;" transform="translate(0,1402) scale(1,-1)">results</text>
+			<path d="M 280,26 L 313,26 Z" style="stroke: rgb(39%,45%,54%); stroke-linecap: butt; stroke-width: 2.4;"/>
+			<text x="324" y="21" style="font-family: Arial, Helvetica, sans-serif; font-size: 15px;fill: rgb(31%,38%,47%); stroke:none;" transform="translate(0,42) scale(1,-1)">Event / write flow</text>
+			<path d="M 503,26 L 537,26 Z" style="stroke: rgb(48%,22%,92%); stroke-linecap: butt; stroke-width: 2.4; stroke-dasharray: 7, 6;"/>
+			<text x="548" y="21" style="font-family: Arial, Helvetica, sans-serif; font-size: 15px;fill: rgb(31%,38%,47%); stroke:none;" transform="translate(0,42) scale(1,-1)">Read / display flow</text>
+		</g>
+	</g>
+</svg>
