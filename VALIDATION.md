@@ -99,12 +99,16 @@ The latest browser evidence was regenerated against Node/PostgreSQL with Kenya/N
 
 The brief overview and clean measurement capture were taken read-only from the current Vite UI on port5173 for the PDF. They performed no mutation or service restart; their temporary browser processes closed at completion.
 
-## Configuration delivered but not executed here
+## Container and CI validation
 
 - Multistage Node24 `Dockerfile` and Compose for **Express + PostgreSQL + Kafka**, private generated credentials, non-superuser app role, persistent volumes, health dependencies and optional worker. Express uses `HOST=0.0.0.0` inside its container; host ports stay localhost-only.
 - GitHub Actions configuration includes actual PostgreSQL services, Node/frontend builds, independent HTTP/PG tests, Compose/image validation and real Kafka integration.
 
-These files target the active `server/` implementation and were inspected locally. **No Docker image build/container run or remote GitHub Actions execution is claimed**: no Docker-compatible runtime is installed here. The actual broker tests above used checksum-verified Apache/Temurin archives instead. See the [current stack and scope](README.md#current-stack-and-scope).
+On 30 October 2026, the [initial GitHub Actions build-and-tests job](https://github.com/ankitpasayat/connectivity-credits-demo/actions/runs/41099578969/job/124214101086) passed against commit `87ae3f4`: backend and frontend builds, 14 native backend tests (two broker tests skipped in that job), 38 independent HTTP/PostgreSQL tests (two broker tests deselected), Compose configuration validation and the Docker application image build.
+
+The separate real-Kafka job initially failed before tests because its fresh data volume was mounted at a root-owned directory. Commit `2002edf` moves the volume and `KAFKA_LOG_DIRS` to the official image's appuser-owned `/var/lib/kafka/data`. The [follow-up workflow](https://github.com/ankitpasayat/connectivity-credits-demo/actions/runs/41100657628) records validation of that fix; check its result before treating the containerized broker path as verified.
+
+No Docker-compatible runtime is installed on the development machine; the local broker tests above used checksum-verified Apache/Temurin archives. Building the application image and running broker integration checks do not establish an end-to-end run of the full Compose application stack. The bundled technical PDF predates the remote CI runs; this record contains the newer evidence. See the [current stack and scope](README.md#current-stack-and-scope).
 
 ## Scope of evidence
 

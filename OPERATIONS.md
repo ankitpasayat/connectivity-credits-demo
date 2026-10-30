@@ -55,8 +55,8 @@ For **broker-free mode**, run `CONNECTIVITY_TRANSPORT=local ./scripts/start.sh`.
 | TypeScript UI | React/TypeScript console in `frontend/`; strict type checking and Vite build. |
 | REST/JSON | Measurement ingestion, rules, worker, retry and ledger endpoints under `/api`; JSON validation/error responses. |
 | Kafka event processing | Real native Node Kafka Producer/Consumer, broker delivery acknowledgements, durable outbox/inbox and explicit consumer-offset commits; independent actual-broker record/offset tests. |
-| Containerization | Multistage `Dockerfile` and Compose for Express + PostgreSQL + Kafka, plus an optional worker. Container execution is untested here because Docker is unavailable. |
-| Tests and CI | Native Node tests, independent HTTP/browser checks against spawned Express processes, real Kafka tests and `.github/workflows/ci.yml`. Workflow provided; no remote CI run is claimed. |
+| Containerization | Multistage `Dockerfile` and Compose for Express + PostgreSQL + Kafka, plus an optional worker. Image build and Compose configuration validation passed in GitHub Actions; the full application stack has not been exercised end to end in containers. |
+| Tests and CI | Native Node tests, independent HTTP/browser checks against spawned Express processes, real Kafka tests and `.github/workflows/ci.yml`. See [remote CI evidence](VALIDATION.md#container-and-ci-validation) for executed checks and current status. |
 | Rules and audit | Versioned policy snapshots, atomic decision/credit/audit completion, failure injection and safe retry. |
 | Persistence | Actual PostgreSQL transactions, uniqueness constraints and session advisory worker locks; SQLite remains only a read-only migration source/historical reference. |
 | Verification and transfer | Synthetic measurements and supplied simulated verification status; integer demo credits only, with no real transfer integration. |
@@ -74,7 +74,7 @@ docker compose --env-file .data/postgres/compose.env up --build
 
 Open [localhost:3000](http://127.0.0.1:3000). Express binds to `0.0.0.0` inside the container, waits for PostgreSQL/Kafka health and uses internal service addresses. Only localhost host ports are published. Named volumes retain PostgreSQL and broker data. Add `--profile background-worker` to also start the continuous consumer; that may process events before guided UI actions. Use the same `--env-file` with `down` to stop containers; `down --volumes` also deletes this Compose project's data.
 
-The files follow Apache's [official Kafka Docker configuration examples](https://github.com/apache/kafka/blob/trunk/docker/examples/docker-compose-files/single-node/plaintext/docker-compose.yml). They have been inspected but **not built or run in Docker on this machine**. The GitHub Actions workflow is configured to validate/build them when run in a Docker-enabled runner.
+The files follow Apache's [official Kafka Docker configuration examples](https://github.com/apache/kafka/blob/trunk/docker/examples/docker-compose-files/single-node/plaintext/docker-compose.yml). Docker is unavailable on the development machine. GitHub Actions has validated the Compose configuration and built the application image; this does not establish a successful end-to-end run of the full container stack. See the [CI record](VALIDATION.md#container-and-ci-validation).
 
 ## Five-minute walkthrough
 
